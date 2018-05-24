@@ -1,0 +1,1 @@
+web: gunicorn fifa-world-cup.wsgi --log-file -
