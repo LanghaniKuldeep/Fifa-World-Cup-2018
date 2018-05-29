@@ -31,7 +31,7 @@ def get_fixtures(request):
 
 	for match_day in group_stages:
 		date_match = match_day.find('span', class_='fi-mu-list__head__date').text
-		date_match = date_match.replace('\n', '').replace(' ', '').split('day')[1]
+		date_match = date_match.replace('\n', '').replace(' ', '').split('day')[1].replace('\r', '')
 		matches = match_day.find_all('div', class_='fi-mu fixture')
 		match_per_day = []
 		for match in matches:
@@ -52,6 +52,7 @@ def get_fixtures(request):
 
 	for match_day in knockouts_stages:
 		date_match = match_day.find('span', class_='fi-mu-list__head__date').text
+		date_match = date_match.replace('\n', '').replace(' ', '').replace('\r', '')
 		matches = match_day.find_all('div', class_='fi-mu fixture')
 		match_per_day = []
 		for match in matches:
