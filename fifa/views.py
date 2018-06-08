@@ -105,3 +105,22 @@ def get_group_standings(request):
 		groups_table.append(group_stats)
 	data = {'Author': "Kuldeep Kumar", 'data': groups_table}
 	return JsonResponse(data)
+
+
+@csrf_exempt
+def get_news(request):
+	news_url = 'https://www.fifa.com/worldcup/news/page/1'
+	req = urllib2.Request(news_url, headers=HDR)
+	page = urllib2.urlopen(req)
+	page_content = page.read()
+	page_content = BeautifulSoup(page_content)
+	news_divs = page_content.find_all('div', class_='col-xs-12 col-sm-4 col-md-3 col-flex')
+	news_posts = []
+	for news_item in news_divs:
+		news = {}
+		news['image_link'] = news_item.find('img')['data-src']
+		news['news_link'] = news_item.find('a', class_='fi-o-media-object__link')['href']
+		news['news_title'] = news_item.find('h3', class_='d3-o-media-object__title fi-o-media-object__title').text
+		news_posts.append(news)
+	data = {'Author': "Kuldeep Kumar", 'data': news_posts}
+	return JsonResponse(data)
