@@ -121,6 +121,7 @@ def get_news(request):
 		news['image_link'] = news_item.find('img')['data-src']
 		news['news_link'] = news_item.find('a', class_='fi-o-media-object__link')['href']
 		news['news_title'] = news_item.find('h3', class_='d3-o-media-object__title fi-o-media-object__title').text
+		news['date'] = news_item.find('p', class_='d3-o-media-object__date fi-o-media-object__date').text
 		news_posts.append(news)
 	data = {'Author': "Kuldeep Kumar", 'data': news_posts}
 	return JsonResponse(data)
