@@ -73,13 +73,13 @@ Include:
 
 ## Authors
 
-* **Kuldeep Kumar** - *Github* ->[Kuldeeplanghani](https://github.com/Kuldeeplanghani)
+* **Kuldeep Kumar** - *Github* -> [Kuldeeplanghani](https://github.com/Kuldeeplanghani)
 
 See also the list of [contributors](https://github.com/Kuldeeplanghani/Fifa-World-Cup-2018/graphs/contributors) who participated in this project.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the MIT License.
 
 ## Acknowledgments
 
