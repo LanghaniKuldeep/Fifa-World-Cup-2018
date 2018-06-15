@@ -143,7 +143,8 @@ def get_live_score(request, match_id):
 	for status in statuses:
 		if 'hidden' not in status.attrs['class']:
 			match_update['status'] = get_clean_text(status.text)
-
+	if not match_update.get('status'):
+		match_update['status'] = get_clean_text(update.find('span', class_='period minute hidden').text)
 	match_update['score'] = get_clean_text(update.find('span', class_='fi-s__scoreText').text)
 	home_goals = page_content.find('div', class_='fi-mh__scorers__home').findAll('li', class_='fi-mh__scorer')
 	away_goals = page_content.find('div', class_='fi-mh__scorers__away').findAll('li', class_='fi-mh__scorer')
