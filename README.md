@@ -39,7 +39,21 @@ python manage.py runserver
 ```
 ## APIs Endpoints
 
+### [Live Score](https://fifa-2018-apis.herokuapp.com/fifa/live/worldcup/matches/match/300331503/)
+Please Add match ID(e.g: 300331503) for specific match in url at the end, You can get that from fixtures API.
+
+URL: https://fifa-2018-apis.herokuapp.com/fifa/live/worldcup/matches/match/<match_id>
+
+Include: 
+* Score
+* Status
+* Home Goal Scorers with Time
+* Away Goal Scorers with Time
+
 ### [Fixtures](https://fifa-2018-apis.herokuapp.com/fifa/fixtures)
+
+URL: https://fifa-2018-apis.herokuapp.com/fifa/fixtures
+
 Include: 
 * Date time in ISO format
 * Group
@@ -47,8 +61,12 @@ Include:
 * Team Flags
 * Stadium 
 * Venue
+* Match ID (Which is needed for live Score)
 
 ### [Group Table](https://fifa-2018-apis.herokuapp.com/fifa/grouptable)
+
+URL: https://fifa-2018-apis.herokuapp.com/fifa/grouptable
+
 Include: 
 * Team Display Name
 * Team flag
@@ -63,6 +81,8 @@ Include:
 
 ### [News](https://fifa-2018-apis.herokuapp.com/fifa/news)
 It provides upto 40 news in a request.
+
+URL: https://fifa-2018-apis.herokuapp.com/fifa/news
 
 Include: 
 * News Title
