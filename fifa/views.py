@@ -31,13 +31,14 @@ def get_fixtures(request):
 
 	for match_day in group_stages:
 		date_match = match_day.find('span', class_='fi-mu-list__head__date').text
-		date_match = date_match.replace('\n', '').replace(' ', '').split('day')[1].replace('\r', '')
-		matches = match_day.find_all('div', class_='fi-mu fixture')
+		date_match = get_clean_text(get_clean_text(date_match).split('day')[1])
+		matches = match_day.find_all('a', class_='fi-mu__link')
 		match_per_day = []
 		for match in matches:
 			match_data = OrderedDict()
 			time = match.find('div', class_='fi-mu__info__datetime').attrs['data-utcdate']
 			time = (datetime.strptime(time, "%Y-%m-%dT%H:%M:%S.000Z") + timedelta(hours=12)).isoformat()
+			match_data['link'] = match.attrs['href']
 			match_data['datetime'] = time
 			match_data['group'] = match.find('div', class_='fi__info__group').text
 			match_data['home_team'] = match.find_all('span', class_='fi-t__nText')[0].text
@@ -52,7 +53,7 @@ def get_fixtures(request):
 
 	for match_day in knockouts_stages:
 		date_match = match_day.find('span', class_='fi-mu-list__head__date').text
-		date_match = date_match.replace('\n', '').replace(' ', '').replace('\r', '')
+		date_match = get_clean_text(date_match)
 		matches = match_day.find_all('div', class_='fi-mu fixture')
 		match_per_day = []
 		for match in matches:
@@ -126,3 +127,43 @@ def get_news(request):
 			news_posts.append(news)
 	data = {'Author': "Kuldeep Kumar", 'data': news_posts}
 	return JsonResponse(data)
+
+
+@csrf_exempt
+def get_live_score(request, match_id):
+
+	url = 'http://www.fifa.com/worldcup/matches/match/' + str(match_id)
+	req = urllib2.Request(url, headers=HDR)
+	page = urllib2.urlopen(req)
+	page_content = page.read()
+	match_update = {}
+	page_content = BeautifulSoup(page_content)
+	update = page_content.find('div', class_='fi-mu__m')
+	statuses = update.find('div', class_='fi-s__status').findAll('span', class_='period')
+	for status in statuses:
+		if 'hidden' not in status.attrs['class']:
+			match_update['status'] = get_clean_text(status.text)
+
+	match_update['score'] = get_clean_text(update.find('span', class_='fi-s__scoreText').text)
+	home_goals = page_content.find('div', class_='fi-mh__scorers__home').findAll('li', class_='fi-mh__scorer')
+	away_goals = page_content.find('div', class_='fi-mh__scorers__away').findAll('li', class_='fi-mh__scorer')
+
+	match_update['home_scoreres'] = get_goal_scorer(home_goals)
+	match_update['away_scoreres'] = get_goal_scorer(away_goals)
+
+	data = {'Author': "Kuldeep Kumar", 'data': match_update}
+	return JsonResponse(data)
+
+
+def get_goal_scorer(goals):
+	players = []
+	for goal_socerer in goals:
+		player = {}
+		player['title'] = get_clean_text(goal_socerer.find('span', class_='fi-p__nShorter ').text)
+		player['minute'] = get_clean_text(goal_socerer.find('span', class_='fi-mh__scorer__minute').text)
+		players.append(player)
+	return players
+
+
+def get_clean_text(text):
+	return text.replace('\r','').replace(' ','').replace('\n','')
