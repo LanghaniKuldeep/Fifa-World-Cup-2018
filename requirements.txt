@@ -1,6 +1,7 @@
 beautifulsoup4==4.6.0
 bs4==0.0.1
 Django==1.8.18
+django-cors-headers==2.2.0
 djangorestframework==3.6.0
 gunicorn==19.8.1
 urllib3==1.15.1
