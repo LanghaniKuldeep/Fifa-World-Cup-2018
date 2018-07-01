@@ -54,12 +54,13 @@ def get_fixtures(request):
 	for match_day in knockouts_stages:
 		date_match = match_day.find('span', class_='fi-mu-list__head__date').text
 		date_match = get_clean_text(date_match)
-		matches = match_day.find_all('div', class_='fi-mu fixture')
+		matches = match_day.find_all('a', class_='fi-mu__link')
 		match_per_day = []
 		for match in matches:
 			match_data = OrderedDict()
 			time = match.find('div', class_='fi-mu__info__datetime').attrs['data-utcdate']
 			time = (datetime.strptime(time, "%Y-%m-%dT%H:%M:%S.000Z") + timedelta(hours=12)).isoformat()
+			match_data['link'] = match.attrs['href']
 			match_data['datetime'] = time
 			match_data['home_team'] = match.find_all('span', class_='fi-t__nText')[0].text
 			match_data['away_team'] = match.find_all('span', class_='fi-t__nText')[1].text
